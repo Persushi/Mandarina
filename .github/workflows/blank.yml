@@ -1,0 +1,26 @@
+name: Post daily mandarina to Threads
+ 
+on:
+  schedule:
+    # 13:00 UTC = 10:00 en Argentina (UTC-3).
+    - cron: '0 13 * * *'
+  workflow_dispatch: {}
+ 
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+ 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+ 
+      - name: Publicar foto en Threads
+        env:
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+        run: node scripts/post-daily.js
+ 
